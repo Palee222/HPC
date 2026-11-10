@@ -1,10 +1,14 @@
 
 import csv
 import math
+import os
+from pathlib import Path
 
-file_path = r"C:\Users\zaida\Downloads\archive\elliptic_bitcoin_dataset\elliptic_txs_features.csv"
-classes_path = r"C:\Users\zaida\Downloads\archive\elliptic_bitcoin_dataset\elliptic_txs_classes.csv"
-edges_path = r"C:\Users\zaida\Downloads\archive\elliptic_bitcoin_dataset\elliptic_txs_edgelist.csv"
+data_folder = Path(os.environ["ELLIPTIC_DATA_DIR"])
+
+file_path = data_folder / "elliptic_txs_features.csv"
+classes_path = data_folder / "elliptic_txs_classes.csv"
+edges_path = data_folder / "elliptic_txs_edgelist.csv"
 
 
 def validate_features():
