@@ -1,5 +1,3 @@
-
-
 import csv
 import os
 from pathlib import Path
@@ -70,6 +68,8 @@ def map_labels(id_mapping):
     if unmapped_labels > 0 or mapped_labels != len(id_mapping):
         raise ValueError("Some transaction labels could not be mapped")
 
+    node_labels.sort(key=lambda row: row[0])
+
     with open(labels_path, "w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["node_id", "label"])
@@ -111,6 +111,7 @@ def map_edges(id_mapping):
 
     if unmapped_edges > 0 or invalid_node_edges > 0:
         raise ValueError("Some graph edges could not be mapped correctly")
+
 
     with open(mapped_edges_path, "w", newline="") as file:
         writer = csv.writer(file)
