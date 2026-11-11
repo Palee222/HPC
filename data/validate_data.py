@@ -76,25 +76,14 @@ def validate_features():
             if missing_in_row > 0:
                 rows_with_missing_values += 1
 
-    print("Total transactions:", total_transactions)
-    print("Rows with incorrect column count:", invalid_rows)
-    print("Unique feature IDs:", len(feature_ids))
-    print("Duplicate feature IDs:", duplicate_feature_ids)
-    print("Total missing feature values:", missing_values)
-    print("Transactions with missing features:", rows_with_missing_values)
-    print("Invalid numerical feature values:", invalid_numbers)
-    print("Number of unique time steps:", len(time_steps))
-    print("Earliest time step:", min(time_steps))
-    print("Latest time step:", max(time_steps))
-    print("Invalid time steps:", invalid_time_steps)
-    print("Missing time steps:", sorted(set(range(1, 50)) - time_steps))
-    print("Empty feature IDs:", empty_feature_ids)
-
     errors = (
         invalid_rows + duplicate_feature_ids +
         missing_values + invalid_numbers +
         invalid_time_steps + len(set(range(1, 50)) - time_steps) +
         empty_feature_ids)
+
+    print("Total transactions:", total_transactions)
+    print("Errors found:", errors)
 
     return feature_ids, errors
 
@@ -146,22 +135,15 @@ def validate_classes(feature_ids):
     missing_labels = feature_ids - class_ids
     missing_features = class_ids - feature_ids
 
-    print("Illicit transactions:", illicit)
-    print("Licit transactions:", licit)
-    print("Unknown transactions:", unknown)
-    print("Total class rows:", total_class_rows)
-    print("Unique class IDs:", len(class_ids))
-    print("Duplicate class IDs:", duplicate_class_ids)
-    print("Transactions missing labels:", len(missing_labels))
-    print("Labels without matching features:", len(missing_features))
-    print("Invalid class labels:", invalid_labels)
-    print("Malformed class rows:", invalid_class_rows)
-    print("Empty class IDs:", empty_class_ids)
-
     errors = (
         duplicate_class_ids + invalid_labels +
         invalid_class_rows + len(missing_labels) +
         len(missing_features) + empty_class_ids)
+
+    print("Illicit transactions:", illicit)
+    print("Licit transactions:", licit)
+    print("Unknown transactions:", unknown)
+    print("Errors found:", errors)
 
     return errors
 
@@ -206,18 +188,13 @@ def validate_edges(feature_ids):
             if source_id == target_id:
                 self_loops += 1
 
-    print("Total edges:", total_edges)
-    print("Edges with missing transaction IDs:", invalid_edges)
-    print("Unique directed edges:", len(edges_seen))
-    print("Duplicate directed edges:", duplicate_edges)
-    print("Self-loops:", self_loops)
-    print("Malformed edge rows:", invalid_edge_rows)
-    print("Edges with empty IDs:", empty_edge_ids)
-
     errors = (
         invalid_edges + duplicate_edges +
         self_loops + invalid_edge_rows + 
         empty_edge_ids)
+
+    print("Total edges:", total_edges)
+    print("Errors found:", errors)
 
     return errors
 
