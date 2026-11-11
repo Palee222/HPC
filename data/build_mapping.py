@@ -22,11 +22,11 @@ def build_mapping():
         reader = csv.reader(file)
 
         for row in reader:
-            transaction_ids.append(row[0])
+            transaction_ids.append((row[0], row[1]))
 
     id_mapping = {}
 
-    for index, transaction_id in enumerate(transaction_ids):
+    for index, (transaction_id, time_step) in enumerate(transaction_ids):
         id_mapping[transaction_id] = index
 
     if len(id_mapping) != len(transaction_ids):
@@ -34,10 +34,10 @@ def build_mapping():
 
     with open(mapping_path, "w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["transaction_id", "node_id"])
+        writer.writerow(["transaction_id", "node_id", "time_step"])
 
-        for transaction_id, node_id in id_mapping.items():
-            writer.writerow([transaction_id, node_id])
+        for index, (transaction_id, time_step) in enumerate(transaction_ids):
+            writer.writerow([transaction_id, index, time_step])
 
     print("Total mapped transactions:", len(id_mapping))
     print("Mapping saved to:", mapping_path)

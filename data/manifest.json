@@ -19,7 +19,7 @@
     
     "graph_visibility": "past_only_provisional",
     "files": {
-        "transaction_mapping.csv": ["transaction_id", "node_id"],
+        "transaction_mapping.csv": ["transaction_id", "node_id", "time_step"],
         "node_labels.csv": ["node_id", "label"],
         "node_edges.csv": ["source_node", "target_node"],
         "node_splits.csv": ["node_id", "split"],

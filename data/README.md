@@ -35,12 +35,26 @@ These commands validate the original dataset, generate the node mapping and chro
 
 ## Generated Files
 
-- `transaction_mapping.csv` — Maps original transaction IDs to node IDs (0–203768).
+- `transaction_mapping.csv` — Maps original transaction IDs to canonical node IDs (0–203768) and includes each transaction's time step (1–49).
 - `node_labels.csv` — Stores each node's label: 1 = illicit, 2 = licit, unknown = unlabeled.
 - `node_edges.csv` — Stores connections between nodes using canonical node IDs.
 - `node_splits.csv` — Assigns every node to training, validation or testing.
 - `node_masks.csv` — Identifies labeled nodes used for supervised training and evaluation.
 - `validation_report.json` — Records dataset validation results and the provisional temporal leakage policy.
+- `time_distribution.txt` — Shows illicit, licit, and unknown transaction counts for all 49 time steps.
+
+## Time Distribution Audit
+
+To regenerate the time-step counts, run:
+
+python data/check_time_distribution.py
+
+The report covers all 49 time steps and totals 203,769 transactions:
+- 4,545 illicit
+- 42,019 licit
+- 157,205 unknown
+
+The saved results are in `data/time_distribution.txt`.
 
 All node IDs refer to the same transactions across these files.
 
@@ -80,3 +94,37 @@ When combining labels, edges, splits, and masks with features, match them using 
 The positive class for evaluation is `"1"` (illicit).
 The negative class is `"2"` (licit).
 Unknown labels must be excluded from supervised evaluation.
+
+## Evaluation Function
+
+The shared evaluation function is in `data/evaluate.py`.
+
+It calculates:
+- True positives (TP)
+- True negatives (TN)
+- False positives (FP)
+- False negatives (FN)
+- Precision, recall, and F1-score
+
+Class `"1"` is illicit (positive).
+Class `"2"` is licit (negative).
+
+Only labeled validation or test nodes should be passed to the function. Unknown labels must be excluded.
+
+Example:
+
+```python
+from data.evaluate import evaluate
+
+actual = ["1", "2", "1", "2"]
+predicted = ["1", "2", "2", "1"]
+
+results = evaluate(actual, predicted)
+print(results)
+```
+
+Run the evaluation tests from the repository root:
+
+```powershell
+python -m pytest data/test_evaluate.py -v
+```
