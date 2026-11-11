@@ -23,6 +23,7 @@ def validate_features():
     duplicate_feature_ids = 0
     feature_ids = set()
     time_steps = set()
+    transaction_times = {}
 
     with open(file_path, "r", newline="") as file:
         reader = csv.reader(file)
@@ -46,6 +47,7 @@ def validate_features():
 
             try:
                 time_step = int(row[1])
+                transaction_times[transaction_id] = time_step
 
                 if time_step < 1 or time_step > 49:
                     invalid_time_steps += 1
@@ -84,7 +86,7 @@ def validate_features():
     print("Total transactions:", total_transactions)
     print("Errors found:", errors)
 
-    return feature_ids, errors
+    return feature_ids, transaction_times, errors
 
 
 def validate_classes(feature_ids):
@@ -147,8 +149,9 @@ def validate_classes(feature_ids):
     return errors
 
 
-def validate_edges(feature_ids):
+def validate_edges(feature_ids, transaction_times):
     total_edges = 0
+    cross_time_edges = 0
     invalid_edges = 0
     duplicate_edges = 0
     self_loops = 0
@@ -170,6 +173,9 @@ def validate_edges(feature_ids):
 
             source_id = row[0]
             target_id = row[1]
+            if source_id in transaction_times and target_id in transaction_times:
+                if transaction_times[source_id] != transaction_times[target_id]:
+                    cross_time_edges += 1
 
             if source_id.strip() == "" or target_id.strip() == "":
                 empty_edge_ids += 1
@@ -195,19 +201,23 @@ def validate_edges(feature_ids):
     print("Total edges:", total_edges)
     print("Errors found:", errors)
 
-    return errors
+    return errors, cross_time_edges
 
 
 def main():
     print("FEATURES VALIDATION")
-    feature_ids, feature_errors = validate_features()
+    feature_ids, transaction_times, feature_errors = validate_features()
 
     print("\nCLASSES VALIDATION")
     class_errors = validate_classes(feature_ids)
 
     print("\nEDGES VALIDATION")
-    edge_errors = validate_edges(feature_ids)
+    edge_errors, cross_time_edges = validate_edges(feature_ids, transaction_times)
 
+    print("Cross-time edges:", cross_time_edges)
+    
+    edge_errors += cross_time_edges
+    
     total_errors = feature_errors + class_errors + edge_errors
 
     report = {
@@ -221,7 +231,7 @@ def main():
             "train_time_steps": "1-34",
             "validation_time_steps": "35-41",
             "test_time_steps": "42-49",
-            "cross_time_edges": 0,
+            "cross_time_edges": cross_time_edges,
             "graph_visibility_policy": "past_only_provisional",
             "normalization_policy": "fit_on_training_only_provisional"}}
 
