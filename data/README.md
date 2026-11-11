@@ -50,7 +50,7 @@ All node IDs refer to the same transactions across these files.
 - Validation: time steps 35–41
 - Testing: time steps 42–49
 
-Unknown labels are excluded from supervised training and evaluation.
+Unknown labels are excluded from the supervised training and evaluation.
 
 ## Temporal Leakage Policy
 
@@ -61,3 +61,22 @@ Unknown labels are excluded from supervised training and evaluation.
 - Validation data is used for model selection; test data must not be used for tuning.
 
 These rules must also be followed by the graph algorithms and GNN implementations.
+
+## Data Loading Contract
+
+The original `elliptic_txs_features.csv` contains no header.
+
+Each row contains:
+- Column 0: Original transaction ID
+- Column 1: Time step
+- Columns 2–166: 165 numerical features
+
+The canonical `node_id` is the zero-based row index in the original features file.
+
+All generated files use these canonical node IDs.
+
+When combining labels, edges, splits, and masks with features, match them using `node_id`, not CSV row position.
+
+The positive class for evaluation is `"1"` (illicit).
+The negative class is `"2"` (licit).
+Unknown labels must be excluded from supervised evaluation.

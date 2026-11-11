@@ -64,6 +64,10 @@ def split_data():
             id_mapping[transaction_id] = node_id
 
     train_nodes = [id_mapping[transaction_id] for transaction_id in train_ids]
+    transaction_ids_by_node = {
+        node_id: transaction_id
+        for transaction_id, node_id in id_mapping.items()
+    }
     val_nodes = [id_mapping[transaction_id] for transaction_id in val_ids]
     test_nodes = [id_mapping[transaction_id] for transaction_id in test_ids]
 
@@ -167,6 +171,41 @@ def split_data():
     print("Validation labeled nodes:", val_count)
     print("Testing labeled nodes:", test_count)
     print()
+
+    # Verify saved chronological splits
+    transaction_times = {}
+
+    with open(features_path, "r", newline="") as file:
+        reader = csv.reader(file)
+
+        for row in reader:
+            transaction_times[row[0]] = int(row[1])
+
+    chronological_errors = 0
+
+    with open(output_path, "r", newline="") as file:
+        reader = csv.reader(file)
+        next(reader)
+
+        for row in reader:
+            node_id = int(row[0])
+            split = row[1]
+
+            transaction_id = transaction_ids_by_node[node_id]
+            time_step = transaction_times[transaction_id]
+
+            if split == "train" and not (1 <= time_step <= 34):
+                chronological_errors += 1
+            elif split == "validation" and not (35 <= time_step <= 41):
+                chronological_errors += 1
+            elif split == "test" and not (42 <= time_step <= 49):
+                chronological_errors += 1
+            elif split not in ("train", "validation", "test"):
+                chronological_errors += 1
+
+    if chronological_errors > 0:
+        raise ValueError("Incorrect chronological split assignments")
+    
     print("VALIDATION PASSED")
 
 
