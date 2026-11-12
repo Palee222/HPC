@@ -1,0 +1,28 @@
+{
+  "feature_contract_version": "role2-v1",
+  "implementation": "sequential-reference",
+  "n_nodes": 203769,
+  "n_time_steps": 49,
+  "mapping_rows": 203769,
+  "edges_read": 234355,
+  "cross_step_dropped": 0,
+  "self_loops_dropped": 0,
+  "duplicates_dropped": 0,
+  "directed_edges": 234355,
+  "undirected_edges": 234355,
+  "pagerank_damping": 0.84999999999999998,
+  "pagerank_iterations": 200,
+  "pagerank_final_l1_delta": 6.774231e-17,
+  "peak_rss_mib": 27.1,
+  "timings_sec": {
+    "load_and_build_csr": 0.127114,
+    "degrees": 0.000446,
+    "neighbor_degree": 0.001099,
+    "two_hop": 0.008164,
+    "triangles": 0.015023,
+    "components": 0.002046,
+    "pagerank": 0.191109,
+    "write_csv": 0.125903,
+    "total": 0.470916
+  }
+}
