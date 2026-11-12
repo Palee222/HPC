@@ -1,0 +1,8 @@
+
+# Role 2 build outputs
+src/reference/graphfeat
+src/reference/*.o
+tests/out/
+
+# Role 2 generated feature files (large; reproduce with graphfeat, verify with the .sha256)
+results/role2/*.csv
