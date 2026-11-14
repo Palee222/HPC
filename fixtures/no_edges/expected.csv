@@ -1,0 +1,4 @@
+node_id,time_step,in_degree,out_degree,total_degree,undirected_degree,nbr_deg_mean,nbr_deg_max,two_hop_reach,triangles,clustering,component_size,pagerank
+0,1,0,0,0,0,0,0,0,0,0,1,1
+1,1,0,0,0,0,0,0,0,0,0,1,1
+2,2,0,0,0,0,0,0,0,0,0,1,1
