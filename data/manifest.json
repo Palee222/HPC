@@ -1,0 +1,28 @@
+{
+    "schema_version": "1.0",
+    "checksum_file": "checksums.json",
+    "dataset": "Elliptic Bitcoin Dataset",
+    "total_nodes": 203769,
+    "total_edges": 234355,
+    "total_time_steps": 49,
+    "node_features": 165,
+    "labels": {
+        "1": "illicit",
+        "2": "licit",
+        "unknown": "unlabeled"
+    },
+    "splits": {
+        "train": [1, 34],
+        "validation": [35, 41],
+        "test": [42, 49]
+    },
+    
+    "graph_visibility": "past_only_provisional",
+    "files": {
+        "transaction_mapping.csv": ["transaction_id", "node_id", "time_step"],
+        "node_labels.csv": ["node_id", "label"],
+        "node_edges.csv": ["source_node", "target_node"],
+        "node_splits.csv": ["node_id", "split"],
+        "node_masks.csv": ["node_id", "train_mask", "val_mask", "test_mask"]}
+    
+}

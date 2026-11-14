@@ -1,0 +1,15 @@
+# Python temporary files
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated Elliptic dataset files
+data/node_edges.csv
+data/node_labels.csv
+data/node_masks.csv
+data/node_splits.csv
+data/transaction_mapping.csv
+data/validation_report.json
+
+# Raw dataset
+elliptic_bitcoin_dataset/
